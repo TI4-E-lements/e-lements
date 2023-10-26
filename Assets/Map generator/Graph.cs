@@ -7,7 +7,7 @@ public class Graph : MonoBehaviour
     [SerializeField] private Sprite emptyTile, pathTile, entryTile;
     [SerializeField] public Node tileNode;
 
-    [SerializeField] public GameObject tilePrefab, Instance_point, tower, pointPrefab;
+    [SerializeField] public GameObject tilePrefab, Instance_point, tower, pointPrefab, Spawner;
 
     [SerializeField] private GameObject tree, flower, grass, grass2;
 
@@ -30,9 +30,9 @@ public class Graph : MonoBehaviour
     void Awake()
     {
 
-          Vector3 novaEscala = new Vector3((float)2, (float)2.5, 0);
+        Vector3 novaEscala = new Vector3((float)2, (float)2.5, 0);
 
-            // Atribua a nova escala ao GameObject
+        // Atribua a nova escala ao GameObject
         tower.transform.localScale = novaEscala;
 
         tileNode.tile = emptyTile;
@@ -47,31 +47,7 @@ public class Graph : MonoBehaviour
         sortSourceAndDestination();
         sortQVertex();
 
-        // //List<Node> path = BreadthFirstPaths.BFS(source, requiredVertices, destination);
 
-        // //path1.AddRange(BreadthFirstPaths.BFS(requiredVertices[0], requiredVertices, requiredVertices[1]));
-        // //path.AddRange(BreadthFirstPaths.BFS(requiredVertices[1], requiredVertices, destination));
-        // //path.AddRange(BreadthFirstPaths.BFS(requiredVertices[2], requiredVertices, requiredVertices[2]));
-        // //path.AddRange(BreadthFirstPaths.BFS(requiredVertices[3], requiredVertices, destination));
-
-        // List<Node> path1 = new List<Node>();
-        // move(source, requiredVertices[0],path1);
-        // //move(requiredVertices[0], requiredVertices[1]);
-        // move(requiredVertices[0], requiredVertices[3],path1);
-        // move(requiredVertices[3], destination,path1);
-
-        // path.Add(path1);
-        // requiredVertices = new List<Node>();
-
-        // sortQVertex();
-
-        // List<Node> path2 = new List<Node>();
-
-        // move2(source, requiredVertices[1], path2);
-        // move2(requiredVertices[1], requiredVertices[2], path2);
-        // move2(requiredVertices[2], destination, path2);
-
-        //  path.Add(path2);
 
         List<Node> path1 = new List<Node>();
         List<Node> path2 = new List<Node>();
@@ -119,7 +95,8 @@ public class Graph : MonoBehaviour
 
         PutRandomTowers(possibleTowers);
 
-        Instantiate(Instance_point, new Vector2(source1.x * 2, (source1.y) - 1), Quaternion.identity);
+        Spawner.SetActive(true);
+        GameObject spawner = Instantiate(Spawner, new Vector2(source1.x * 2, (source1.y) - 1), Quaternion.identity);
     }
 
     List<int> GenerateUniqueRandomNumbers(int min, int max, int count)
@@ -156,7 +133,7 @@ public class Graph : MonoBehaviour
 
             for (int j = 0; j < radius; j++)
             {
-               
+
                 if (!tileToPrint.isPath)
                 {
                     tilePrefab.GetComponent<SpriteRenderer>().sprite = emptyTile;
@@ -219,13 +196,13 @@ public class Graph : MonoBehaviour
                 GameObject tile = Instantiate(tilePrefab, new Vector2(n.x * 2, -(n.y * 2)), Quaternion.identity);
                 path1.Add(tile.transform);
 
-                if (ind == 0)
-                {
-                    GameObject newObj = new GameObject("a" + index);
+                // if (ind == 0)
+                // {
+                //     GameObject newObj = new GameObject("a" + index);
 
-                    Vector2 position = new Vector2(tile.transform.position.x, tile.transform.position.y);
-                    Instantiate(newObj, position, Quaternion.identity);
-                }
+                //     Vector2 position = new Vector2(tile.transform.position.x, tile.transform.position.y);
+                //     Instantiate(newObj, position, Quaternion.identity);
+                // }
 
 
             }
@@ -236,23 +213,23 @@ public class Graph : MonoBehaviour
                 GameObject tile = Instantiate(tilePrefab, new Vector2(n.x * 2, -(n.y * 2)), Quaternion.identity);
                 path1.Add(tile.transform);
 
-                if (ind == 0)
-                {
-                    if (n.isLast)
-                    {
-                        GameObject newObj = new GameObject("aEnd");
+                // if (ind == 0)
+                // {
+                //     if (n.isLast)
+                //     {
+                //         GameObject newObj = new GameObject("aEnd");
 
-                        Vector2 position = new Vector2(tile.transform.position.x, tile.transform.position.y);
-                        Instantiate(newObj, position, Quaternion.identity);
-                    }
-                    else
-                    {
-                        GameObject newObj = new GameObject("a" + index);
+                //         Vector2 position = new Vector2(tile.transform.position.x, tile.transform.position.y);
+                //         Instantiate(newObj, position, Quaternion.identity);
+                //     }
+                //     else
+                //     {
+                //         GameObject newObj = new GameObject("a" + index);
 
-                        Vector2 position = new Vector2(tile.transform.position.x, tile.transform.position.y);
-                        Instantiate(newObj, position, Quaternion.identity);
-                    }
-                }
+                //         Vector2 position = new Vector2(tile.transform.position.x, tile.transform.position.y);
+                //         Instantiate(newObj, position, Quaternion.identity);
+                //     }
+                // }
 
 
 
@@ -461,153 +438,22 @@ public class Graph : MonoBehaviour
     {
         List<int> randomNumbers = GenerateUniqueRandomNumbers(0, towerPlacements.Count, 12);
 
+        int index =0;
+
         //List<Node> randomElements = GetRandomElements(towerPlacements, 5);
 
         foreach (var item in randomNumbers)
         {
-            Instantiate(tower, new Vector3(towerPlacements[item].x * 2, -(towerPlacements[item].y * 2)+1, 0), Quaternion.identity);
+           GameObject t =  Instantiate(tower, new Vector3(towerPlacements[item].x * 2, -(towerPlacements[item].y * 2) + 1, 0), Quaternion.identity);
+           t.name = "tower" + index;
+
+           index++;
         }
         //put towers randomly in the placements available 
 
     }
 
-    // bool move(Node root, Node tail, List<Node> path1)
-    // {
-    //     //List<Node> path1 = new List<Node>();
-    //     Node current = root;
-
-    //     bool reachedX = false, reachedY = false;
-
-    //     while (current != tail)
-    //     {
-    //         // Debug.Log(current.x + " -  " + current.y);
-    //         // Debug.Log("Tail:" + tail.x + " -  " + tail.y);
-    //         if (!reachedY)
-    //         {
-    //             // Debug.Log("Nao y");
-    //             if (current.y < tail.y)
-    //             {
-    //                 current.isPath = true;
-    //                 path1.Add(current);
-    //                 current = current.bottom;
-    //             }
-    //             else if (current.y > tail.y)
-    //             {
-    //                 current.isPath = true;
-    //                 path1.Add(current);
-
-    //                 current = current.top;
-    //             }
-    //             if (current.y == tail.y)
-    //             {
-    //                 reachedY = true;
-    //             }
-    //         }
-    //         else if (!reachedX)
-    //         {
-    //             // Debug.Log("Nao x");
-    //             if (current.x > tail.x)
-    //             {
-    //                 current.isPath = true;
-    //                 path1.Add(current);
-
-    //                 current = current.left;
-    //             }
-    //             else if (current.x < tail.x)
-    //             {
-    //                 current.isPath = true;
-    //                 path1.Add(current);
-    //                 current = current.right;
-    //             }
-    //             if (current.x == tail.x)
-    //             {
-    //                 reachedX = true;
-    //             }
-    //         }
-    //         if (reachedX && reachedY)
-    //         {
-    //             Debug.Log("Chegou");
-    //             current.isPath = true;
-    //             current = tail;
-    //             path1.Add(current);
-    //             //path.Add(path1);
-    //             return true;
-    //         }
-
-    //     }
-    //     return false;
-    // }
-
-    // bool move2(Node root, Node tail, List<Node> path1)
-    // {
-    //     //List<Node> path1 = new List<Node>();
-    //     Node current = root;
-    //     path1.Add(current);
-    //     current.isPath = true;
-
-    //     bool reachedX = false, reachedY = false;
-
-    //     while (current != tail)
-    //     {
-    //         Debug.Log(current.x + " -  " + current.y);
-    //         Debug.Log("Tail:" + tail.x + " -  " + tail.y);
-    //         if (!reachedX)
-    //         {
-    //             Debug.Log("Nao x");
-    //             if (current.x > tail.x)
-    //             {
-    //                 current.isPath = true;
-    //                 path1.Add(current);
-
-    //                 current = current.left;
-    //             }
-    //             else if (current.x < tail.x)
-    //             {
-    //                 current.isPath = true;
-    //                 path1.Add(current);
-    //                 current = current.right;
-    //             }
-    //             if (current.x == tail.x)
-    //             {
-    //                 reachedX = true;
-    //             }
-    //         }
-    //         else if (!reachedY)
-    //         {
-    //             Debug.Log("Nao y");
-    //             if (current.y < tail.y)
-    //             {
-    //                 current.isPath = true;
-    //                 path1.Add(current);
-    //                 current = current.bottom;
-    //             }
-    //             else if (current.y > tail.y)
-    //             {
-    //                 current.isPath = true;
-    //                 path1.Add(current);
-
-    //                 current = current.top;
-    //             }
-    //             if (current.y == tail.y)
-    //             {
-    //                 reachedY = true;
-    //             }
-    //         }
-
-    //         if (reachedX && reachedY)
-    //         {
-    //             Debug.Log("Chegou");
-    //             current.isPath = true;
-    //             current = tail;
-    //             path1.Add(current);
-    //             //path.Add(path1);
-    //             return true;
-    //         }
-
-    //     }
-    //     return false;
-    // }
-
+  
 }
 
 
