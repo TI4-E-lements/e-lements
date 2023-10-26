@@ -19,7 +19,7 @@ public GameObject tutorialPage3;
     }
 
     public void playGame() {
-       SceneManager.LoadSceneAsync("Level_1");
+       SceneManager.LoadSceneAsync("Level_2");
     }
 
     public void openSettings() {
@@ -57,7 +57,7 @@ public void nextPageTutorial() {
 
     if (currentPage > 3) {
         currentPage = 1;
-        SceneManager.LoadScene("Level_1");
+        SceneManager.LoadScene("Level_2");
     } else {
     switch (currentPage) {
         case 1:
